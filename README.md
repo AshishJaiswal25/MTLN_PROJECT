@@ -1,1 +1,1 @@
-# MTLN_PROJECT
+# Maine Trust Local News
