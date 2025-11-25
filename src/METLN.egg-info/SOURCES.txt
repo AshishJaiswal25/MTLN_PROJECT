@@ -1,9 +1,0 @@
-README.md
-setup.py
-src/METLN/__init__.py
-src/METLN/etl_pipeline.py
-src/METLN/timeseries.py
-src/METLN.egg-info/PKG-INFO
-src/METLN.egg-info/SOURCES.txt
-src/METLN.egg-info/dependency_links.txt
-src/METLN.egg-info/top_level.txt
