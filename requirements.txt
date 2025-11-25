@@ -1,0 +1,12 @@
+pandas
+numpy
+matplotlib
+seaborn
+dvc
+notebook
+pyYAML
+scipy
+openpyxl
+sqlalchemy
+tqdm
+-e .
