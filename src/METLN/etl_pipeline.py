@@ -6,6 +6,8 @@ import os
 
 from tqdm import tqdm
 from pathlib import Path
+from openpyxl import load_workbook
+from .excel_repair import extract_data_from_corrupted_xlsx
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -90,9 +92,32 @@ def combine_data_files():
                 skipped_files.append(file.name)
                 continue
 
-            df = pd.read_excel(file)
-            df.insert(0,"date_of_extract",date_str)
-            new_dataframes.append(df)
+            # Try multiple methods to read the Excel file
+            df = None
+            methods = [
+                lambda: pd.read_excel(file, engine='openpyxl'),
+                lambda: pd.read_excel(file, engine='openpyxl', sheet_name=0),
+                lambda: pd.read_excel(file, engine='openpyxl', sheet_name='Sheet1'),
+            ]
+            
+            # Try reading with openpyxl directly for corrupted files
+            for i, method in enumerate(methods):
+                try:
+                    df = method()
+                    logging.info(f"Successfully read {file.name} using method {i+1}")
+                    break
+                except Exception as method_error:
+                    if i == len(methods) - 1:  # Last method
+                        # Try manual repair using direct XML extraction
+                        try:
+                            df = extract_data_from_corrupted_xlsx(file)
+                            logging.info(f"Successfully read {file.name} using manual XML extraction")
+                        except Exception as repair_error:
+                            raise ValueError(f"All methods failed. Last error: {repair_error}")
+            
+            if df is not None:
+                df.insert(0,"date_of_extract",date_str)
+                new_dataframes.append(df)
         except Exception as e:
             logging.error(f"Error processing file {file.name} : {e}")
     
