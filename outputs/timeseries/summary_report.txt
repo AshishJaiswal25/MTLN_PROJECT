@@ -1,24 +1,24 @@
 TIME SERIES ANALYSIS SUMMARY REPORT
 ================================================================================
 
-Generated at: 2025-11-26 16:06:31
+Generated at: 2025-11-29 16:30:47
 
 
 DATA SUMMARY
 --------------------------------------------------------------------------------
-total_records: 572292
+total_records: 572220
 date_range: 2024-02-01 00:00:00 to 2024-10-01 00:00:00
 unique_dates: 9
-unique_accounts: 65856
+unique_accounts: 65848
 unique_publications: 5
-unique_states: 5458
-unique_cities: 5877
+unique_states: 52
+unique_cities: 2076
 
 SUBSCRIPTION STATUS
 --------------------------------------------------------------------------------
-total_subscriptions: 572292
+total_subscriptions: 572220
 active_subscriptions: 0
-inactive_subscriptions: 572292
+inactive_subscriptions: 572220
 activation_rate: 0.0
 
 TREND ANALYSIS
@@ -26,39 +26,39 @@ TREND ANALYSIS
 overall_trend: Growing
 avg_daily_growth: 185.88888888888889
 total_growth: 1673
-growth_rate: 2.6623593628160913
+growth_rate: 2.6626983495408263
 volatility: 90.98106160860385
 
 TOP PUBLICATIONS
 --------------------------------------------------------------------------------
-MTM_PT: 364713
-SMG_SJ: 99301
+MTM_PT: 364668
+SMG_SJ: 99274
 MTM_MS: 65786
 MTM_KJ: 30000
 AMG_TR: 12492
 
 TOP STATES
 --------------------------------------------------------------------------------
-ME: 387356
-PT_O7Day_D_FullRate: 61186
-PT_O7Day_D_Paypal99: 9914
-SJ_O7Day_D_FullRate: 9189
-MS_O7Day_D_FullRate: 8009
-PT_O7Day_D_99: 5917
-PT_O7Day_D_59S1: 4606
-O7DAY_TRIAL$10S1: 4467
-SJ_O7Day_D_Paypal99: 2931
-PT_O7Day_D_SAVE: 2592
+ME: 530808
+MA: 8472
+FL: 5381
+NY: 3739
+NH: 3012
+CA: 2291
+VA: 1662
+CT: 1656
+MD: 1447
+PA: 1219
 
 TOP CITIES
 --------------------------------------------------------------------------------
-Portland: 40698
-Scarborough: 16384
-South Portland: 15562
-Brunswick: 14667
-Lewiston: 13534
-Auburn: 12844
-Falmouth: 11805
-Augusta: 9955
-Cape Elizabeth: 9873
-4240: 7963
+Portland: 58372
+Lewiston: 22695
+South Portland: 21286
+Auburn: 20713
+Brunswick: 20162
+Scarborough: 19268
+Falmouth: 15788
+Cape Elizabeth: 14825
+Augusta: 13128
+Waterville: 11416

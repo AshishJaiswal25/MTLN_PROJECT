@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO, format='[%(asctime)s] : %(message)s:')
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
-CLEAN_FILE = PROCESSED_DATA_DIR / "clean_data.csv"
+CLEAN_FILE = PROCESSED_DATA_DIR / "cleaned_data.csv"
 OUTPUT_DIR = PROJECT_ROOT / "outputs" / "timeseries"
 
 
@@ -73,19 +73,19 @@ class TimeSeriesAnalyzer:
         
         # Group by date and calculate various metrics
         daily_stats = self.df.groupby('date_of_extract').agg({
-            'AccoutID': 'count',  # Total subscriptions
-            'Status': lambda x: (x == 'A').sum(),  # Active subscriptions
-            'Publication': 'nunique',  # Number of publications
-            'City': 'nunique',  # Number of cities
-            'State': 'nunique',  # Number of states
-            'Route ID': 'nunique',  # Number of routes
+            'accoutid': 'count',  # Total subscriptions
+            'status': lambda x: (x == 'A').sum(),  # Active subscriptions
+            'publication': 'nunique',  # Number of publications
+            'city': 'nunique',  # Number of cities
+            'state': 'nunique',  # Number of states
+            'route_id': 'nunique',  # Number of routes
         }).rename(columns={
-            'AccoutID': 'total_subscriptions',
-            'Status': 'active_subscriptions',
-            'Publication': 'unique_publications',
-            'City': 'unique_cities',
-            'State': 'unique_states',
-            'Route ID': 'unique_routes'
+            'accoutid': 'total_subscriptions',
+            'status': 'active_subscriptions',
+            'publication': 'unique_publications',
+            'city': 'unique_cities',
+            'state': 'unique_states',
+            'route_id': 'unique_routes'
         })
         
         # Calculate inactive subscriptions
@@ -180,7 +180,7 @@ class TimeSeriesAnalyzer:
         """
         logging.info("Analyzing by subscription status...")
         
-        status_ts = self.df.groupby(['date_of_extract', 'Status']).size().unstack(fill_value=0)
+        status_ts = self.df.groupby(['date_of_extract', 'status']).size().unstack(fill_value=0)
         
         # Calculate percentages
         status_pct = status_ts.div(status_ts.sum(axis=1), axis=0) * 100
@@ -193,7 +193,7 @@ class TimeSeriesAnalyzer:
         """
         logging.info("Analyzing by publication...")
         
-        pub_ts = self.df.groupby(['date_of_extract', 'Publication']).size().unstack(fill_value=0)
+        pub_ts = self.df.groupby(['date_of_extract', 'publication']).size().unstack(fill_value=0)
         
         return pub_ts
     
@@ -204,12 +204,12 @@ class TimeSeriesAnalyzer:
         logging.info("Analyzing by geography...")
         
         # By State
-        state_ts = self.df.groupby(['date_of_extract', 'State']).size().unstack(fill_value=0)
+        state_ts = self.df.groupby(['date_of_extract', 'state']).size().unstack(fill_value=0)
         
         # Top cities over time
-        top_cities = self.df['City'].value_counts().head(10).index
-        city_ts = self.df[self.df['City'].isin(top_cities)].groupby(
-            ['date_of_extract', 'City']
+        top_cities = self.df['city'].value_counts().head(10).index
+        city_ts = self.df[self.df['city'].isin(top_cities)].groupby(
+            ['date_of_extract', 'city']
         ).size().unstack(fill_value=0)
         
         return state_ts, city_ts
@@ -360,7 +360,7 @@ class TimeSeriesAnalyzer:
         ax1.set_title('Subscription Count by Status', fontsize=12, fontweight='bold')
         ax1.set_xlabel('Date')
         ax1.set_ylabel('Number of Subscriptions')
-        ax1.legend(title='Status', bbox_to_anchor=(1.05, 1), loc='upper left')
+        ax1.legend(title='status', bbox_to_anchor=(1.05, 1), loc='upper left')
         ax1.grid(True, alpha=0.3)
         
         # Plot 2: Stacked Area Chart (Percentages)
@@ -369,7 +369,7 @@ class TimeSeriesAnalyzer:
         ax2.set_title('Subscription Percentage by Status', fontsize=12, fontweight='bold')
         ax2.set_xlabel('Date')
         ax2.set_ylabel('Percentage (%)')
-        ax2.legend(title='Status', bbox_to_anchor=(1.05, 1), loc='upper left')
+        ax2.legend(title='status', bbox_to_anchor=(1.05, 1), loc='upper left')
         ax2.grid(True, alpha=0.3)
         
         plt.tight_layout()
@@ -435,7 +435,7 @@ class TimeSeriesAnalyzer:
         ax1.set_title('Top 10 States - Subscription Trends', fontsize=12, fontweight='bold')
         ax1.set_xlabel('Date')
         ax1.set_ylabel('Number of Subscriptions')
-        ax1.legend(title='State', bbox_to_anchor=(1.05, 1), loc='upper left')
+        ax1.legend(title='state', bbox_to_anchor=(1.05, 1), loc='upper left')
         ax1.grid(True, alpha=0.3)
         
         # Plot 2: Cities
@@ -444,7 +444,7 @@ class TimeSeriesAnalyzer:
         ax2.set_title('Top 10 Cities - Subscription Trends', fontsize=12, fontweight='bold')
         ax2.set_xlabel('Date')
         ax2.set_ylabel('Number of Subscriptions')
-        ax2.legend(title='City', bbox_to_anchor=(1.05, 1), loc='upper left')
+        ax2.legend(title='city', bbox_to_anchor=(1.05, 1), loc='upper left')
         ax2.grid(True, alpha=0.3)
         
         plt.tight_layout()
@@ -477,21 +477,21 @@ class TimeSeriesAnalyzer:
                 'total_records': len(self.df),
                 'date_range': f"{self.df['date_of_extract'].min()} to {self.df['date_of_extract'].max()}",
                 'unique_dates': self.df['date_of_extract'].nunique(),
-                'unique_accounts': self.df['AccoutID'].nunique(),
-                'unique_publications': self.df['Publication'].nunique(),
-                'unique_states': self.df['State'].nunique(),
-                'unique_cities': self.df['City'].nunique(),
+                'unique_accounts': self.df['accoutid'].nunique(),
+                'unique_publications': self.df['publication'].nunique(),
+                'unique_states': self.df['state'].nunique(),
+                'unique_cities': self.df['city'].nunique(),
             },
             'subscription_status': {
                 'total_subscriptions': len(self.df),
-                'active_subscriptions': (self.df['Status'] == 'A').sum(),
-                'inactive_subscriptions': (self.df['Status'] != 'A').sum(),
-                'activation_rate': (self.df['Status'] == 'A').sum() / len(self.df) * 100,
+                'active_subscriptions': (self.df['status'] == 'A').sum(),
+                'inactive_subscriptions': (self.df['status'] != 'A').sum(),
+                'activation_rate': (self.df['status'] == 'A').sum() / len(self.df) * 100,
             },
             'trend_analysis': trends,
-            'top_publications': self.df['Publication'].value_counts().head(10).to_dict(),
-            'top_states': self.df['State'].value_counts().head(10).to_dict(),
-            'top_cities': self.df['City'].value_counts().head(10).to_dict(),
+            'top_publications': self.df['publication'].value_counts().head(10).to_dict(),
+            'top_states': self.df['state'].value_counts().head(10).to_dict(),
+            'top_cities': self.df['city'].value_counts().head(10).to_dict(),
         }
         
         # Print report
